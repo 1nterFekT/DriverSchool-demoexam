@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../../database/db.js";
 
 export async function getAllUsers(req, res) {
     try {

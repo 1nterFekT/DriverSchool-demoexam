@@ -2,9 +2,9 @@
   "name": "demoexam-practice",
   "version": "1.0.0",
   "type": "module",
-  "main": "server/index.js",
+  "main": "main.js",
   "scripts": {
-    "dev": "node --watch server/index.js"
+    "dev": "node --watch main.js"
   },
   "author": "",
   "license": "ISC",
