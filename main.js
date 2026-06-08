@@ -1,20 +1,29 @@
-import express from 'express'
-import cors from 'cors'
+import express, { response } from "express";
+import { engine } from "express-handlebars";
 
-import userRoutes from './src/api/routes/userRouter.js'
+import userRoutes from "./src/api/routes/userRouter.js";
 
-const app = express();
-const port = 3000;
+export const app = express();
 
-app.use(cors());
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", import.meta.dirname + "/views");
+
 app.use(express.json());
 
-app.use('/api/users', userRoutes);
+app.use("/api/users", userRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (req, res) => {
+    res.send("Hello World!");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.get("/api", (req, res) => {
+    res.json({
+        status: "OK",
+    });
+});
+
+app.listen(3000, () => {
+    console.log(`App listening: http://localhost:3000/`);
+    console.log(`API listening: http://localhost:3000/api/`);
 });
