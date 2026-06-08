@@ -2,6 +2,7 @@ import express, { response } from "express";
 import { engine } from "express-handlebars";
 
 import userRoutes from "./src/api/routes/userRouter.js";
+import assignmentRoutes from "./src/api/routes/assignmentRouter.js";
 
 export const app = express();
 
@@ -12,6 +13,7 @@ app.set("views", import.meta.dirname + "/views");
 app.use(express.json());
 
 app.use(userRoutes);
+app.use(assignmentRoutes);
 
 app.get("/", (req, res) => {
     res.send("Hello World!");

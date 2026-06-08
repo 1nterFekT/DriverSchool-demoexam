@@ -30,3 +30,25 @@ export async function getUserById(req, res) {
         });
     }
 }
+
+export async function getAssignmentsByUserId(req, res) {
+    try {
+        const { id } = req.params;
+        const { rows } = await pool.query(
+            "SELECT * FROM assignments WHERE user_id = $1",
+            [id]
+        );
+
+        if (rows.length !== 0) {
+            res.status(200).json(rows);
+        } else {
+            res.status(404).json({
+                error: `У пользователя с id=${id} не найдено ни одной заявки`,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+        });
+    }
+}
