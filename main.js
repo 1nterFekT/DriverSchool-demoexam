@@ -11,7 +11,7 @@ app.set("views", import.meta.dirname + "/views");
 
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
+app.use(userRoutes);
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
