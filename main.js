@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import { engine } from "express-handlebars";
 
 import userRoutes from "./src/api/routes/userRouter.js";
@@ -8,8 +8,9 @@ export const app = express();
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
-app.set("views", import.meta.dirname + "/views");
+app.set("views", "src/views");
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(userRoutes);

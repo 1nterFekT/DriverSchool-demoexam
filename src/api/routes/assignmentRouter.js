@@ -7,4 +7,8 @@ const router = express.Router();
 router.get("/api/assignments", assignmentController.getAllAssignments);
 router.get("/api/assignments/:id", assignmentController.getAssignmentById);
 
+router.get("/", async (req, res) => {
+    res.render("home");
+});
+
 export default router;
