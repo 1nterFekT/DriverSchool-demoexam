@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import { engine } from "express-handlebars";
 
 import userRoutes from "./src/api/routes/userRouter.js";
@@ -13,12 +14,24 @@ app.set("views", "src/views");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(
+    session({
+        secret: "secret-key",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24,
+        },
+    })
+);
+
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+})
+
 app.use(userRoutes);
 app.use(assignmentRoutes);
-
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
 
 app.get("/api", (req, res) => {
     res.json({

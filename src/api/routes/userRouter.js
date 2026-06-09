@@ -4,6 +4,20 @@ import * as userController from "../controllers/userController.js";
 
 const router = express.Router();
 
+router.get("/login", (req, res) => {
+    res.render("login");
+});
+
+router.post("/login", userController.login);
+
+router.get("/register", (req, res) => {
+    res.render("register");
+});
+
+router.post("/register", userController.register);
+
+router.get("/logout", userController.logout);
+
 router.get("/api/users", userController.getAllUsers);
 router.get("/api/users/:id", userController.getUserById);
 router.get("/api/users/:id/assignments", userController.getAssignmentsByUserId);
