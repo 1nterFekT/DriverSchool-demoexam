@@ -10,6 +10,14 @@
         <p>Транспорт: {{this.transport_title}}</p>
         <p>Дата начала обучения: {{this.start_date}}</p>
         <p>Статус: <b>{{this.status}}</b></p>
+        <p>
+            Отзыв:
+            {{#if this.review}}
+                {{this.review}}
+            {{else}}
+                отзыв отсутствует
+            {{/if}}
+        </p>
 
         <form action="/admin/status" method="post">
             <input type="hidden" name="assignment_id" value="{{this.id}}" />

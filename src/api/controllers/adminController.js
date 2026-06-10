@@ -27,10 +27,12 @@ export async function getDashboard(req, res) {
                 a.status,
                 u.first_name,
                 u.last_name,
-                t.title AS transport_title
+                t.title AS transport_title,
+                r.description AS review
             FROM assignments a
             JOIN users u ON u.id = a.user_id
             JOIN transport t ON t.id = a.transport_id
+            LEFT JOIN reviews r ON r.assignment_id = a.id
             ORDER BY a.id DESC`
         );
 
