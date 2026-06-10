@@ -1,0 +1,12 @@
+<h1>Панель администратора</h1>
+
+{{#if error}}
+    <p>{{error}}</p>
+{{/if}}
+
+<form action="/admin" method="post">
+    <input name="login" placeholder="Логин" />
+    <input type="password" name="password" placeholder="Пароль" />
+
+    <button type="submit">Войти</button>
+</form>

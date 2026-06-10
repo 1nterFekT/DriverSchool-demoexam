@@ -6,6 +6,7 @@ import { engine } from "express-handlebars";
 
 import userRoutes from "./src/api/routes/userRouter.js";
 import assignmentRoutes from "./src/api/routes/assignmentRouter.js";
+import adminRoutes from "./src/api/routes/adminRouter.js";
 
 export const app = express();
 
@@ -34,11 +35,13 @@ app.use(
 
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
+    res.locals.admin = req.session.admin || null;
     next();
 });
 
 app.use(userRoutes);
 app.use(assignmentRoutes);
+app.use("/admin", adminRoutes);
 
 app.get("/api", (req, res) => {
     res.json({
