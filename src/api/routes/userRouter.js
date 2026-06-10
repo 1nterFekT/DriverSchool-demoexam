@@ -1,6 +1,7 @@
 import express from "express";
 
 import * as userController from "../controllers/userController.js";
+import { isAuthenticated } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -17,6 +18,9 @@ router.get("/register", (req, res) => {
 router.post("/register", userController.register);
 
 router.get("/logout", userController.logout);
+
+router.get("/profile", isAuthenticated, userController.getProfile);
+router.post("/reviews", isAuthenticated, userController.createReview);
 
 router.get("/api/users", userController.getAllUsers);
 router.get("/api/users/:id", userController.getUserById);

@@ -1,0 +1,40 @@
+<h1>Личный кабинет</h1>
+
+<p>Пользователь: {{user.login}}</p>
+
+<hr />
+
+<h2>История заявок:</h2>
+
+{{#each assignments}}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <p><b>Заявка #{{this.assignment_id}}</b></p>
+        <p>Транспорт: {{this.transport_title}}</p>
+        <p>Дата начала: {{this.start_date}}</p>
+        <p>Статус: {{this.status}}</p>
+
+        <p>
+            Отзыв:
+            {{#if this.review_description}}
+                {{this.review_description}}
+            {{else}}
+                <i>нет отзыва</i>
+            {{/if}}
+        </p>
+
+        {{#unless this.review_description}}
+            <form action="/reviews" method="post">
+                <input
+                    type="hidden"
+                    name="assignment_id"
+                    value="{{this.assignment_id}}"
+                />
+                <textarea
+                    name="description"
+                    placeholder="Оставить отзыв"
+                ></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+        {{/unless}}
+    </div>
+{{/each}}

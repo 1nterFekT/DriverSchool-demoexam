@@ -54,6 +54,36 @@ export async function getAssignmentsByUserId(req, res) {
     }
 }
 
+export async function getProfile(req, res) {
+    try {
+        const user_id = req.session.user.id;
+
+        const result = await pool.query(
+            `SELECT
+                a.id AS assignment_id,
+                a.start_date,
+                a.status,
+                t.title AS transport_title,
+                r.description AS review_description,
+                r.id AS review_id
+            FROM assignments a
+            JOIN transport t ON t.id = a.transport_id
+            LEFT JOIN reviews r ON r.assignment_id = a.id
+            WHERE a.user_id = $1
+            ORDER BY a.id DESC`,
+            [user_id]
+        );
+
+        res.render("profile", {
+            user: req.session.user,
+            assignments: result.rows,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
+}
+
 // Для авторизации и регистрации пользователей
 export async function register(req, res) {
     try {
@@ -178,4 +208,42 @@ export function logout(req, res) {
     req.session.destroy(() => {
         res.redirect("/login");
     });
+}
+
+// Работа с отзывами
+export async function createReview(req, res) {
+    try {
+        const { assignment_id, description } = req.body;
+
+        const user_id = req.session.user.id;
+
+        const check = await pool.query(
+            `SELECT * FROM assignments WHERE id = $1 AND user_id = $2`,
+            [assignment_id, user_id]
+        );
+
+        if (check.rows.length === 0) {
+            return res.status(403).send("Нет доступа");
+        }
+
+        const existing = await pool.query(
+            `SELECT * FROM reviews WHERE assignment_id = $1`,
+            [assignment_id]
+        );
+
+        if (existing.rows.length > 0) {
+            return res.redirect("/profile");
+        }
+
+        await pool.query(
+            `INSERT INTO reviews(assignment_id, description)
+            VALUES ($1, $2)`,
+            [assignment_id, description]
+        );
+
+        res.redirect("/profile");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(error.message);
+    }
 }
