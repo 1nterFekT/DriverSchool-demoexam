@@ -1,0 +1,15 @@
+<nav>
+    <div>
+        <a href="/">
+            <h2>Автошкола</h2>
+        </a>
+    </div>
+
+    <div>
+        {{#if user}}
+            <a href="/profile">Личный кабинет</a>
+            <span>{{user.login}}</span>
+            <a href="/logout">Выйти</a>
+        {{/if}}
+    </div>
+</nav>

@@ -9,7 +9,12 @@ import assignmentRoutes from "./src/api/routes/assignmentRouter.js";
 
 export const app = express();
 
-app.engine("handlebars", engine());
+app.engine(
+    "handlebars",
+    engine({
+        partialsDir: "src/views/partials",
+    })
+);
 app.set("view engine", "handlebars");
 app.set("views", "src/views");
 
