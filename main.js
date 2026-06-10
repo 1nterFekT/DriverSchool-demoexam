@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import express from "express";
 import session from "express-session";
 import { engine } from "express-handlebars";
@@ -16,7 +18,7 @@ app.use(express.json());
 
 app.use(
     session({
-        secret: "secret-key",
+        secret: process.env.SESSION_SECRET || "",
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -28,7 +30,7 @@ app.use(
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
-})
+});
 
 app.use(userRoutes);
 app.use(assignmentRoutes);
