@@ -98,6 +98,37 @@ export async function register(req, res) {
             email,
         } = req.body;
 
+        if (login.length < 6) {
+            return res.render("register", {
+                error: "Логин не может быть короче 6 символов",
+            });
+        }
+
+        if (login.length > 50) {
+            return res.render("register", {
+                error: "Логин не может быть больше 50 символов",
+            });
+        }
+
+        const loginRegex = /[A-Za-z0-9]+/;
+        if (!loginRegex.test(login)) {
+            return res.render("register", {
+                error: "Логин может содержать только латинские буквы и цифры",
+            });
+        }
+
+        if (password.length < 8) {
+            return res.render("register", {
+                error: "Пароль не может быть короче 8 символов",
+            });
+        }
+
+        if (password.length > 50) {
+            return res.render("register", {
+                error: "Пароль не может быть больше 50 символов",
+            });
+        }
+
         const existingUser = await pool.query(
             `SELECT * FROM credentials WHERE login = $1`,
             [login]
