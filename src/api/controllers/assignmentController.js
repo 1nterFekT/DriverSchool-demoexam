@@ -31,3 +31,57 @@ export async function getAssignmentById(req, res) {
         });
     }
 }
+
+export async function renderHome(req, res) {
+    try {
+        const transportResult = await pool.query(
+            "SELECT * FROM transport ORDER BY id"
+        );
+
+        const now = new Date();
+
+        const currentDate = now.toISOString().slice(0, 16);
+
+        res.render("home", {
+            userId: req.session.user.id,
+            transports: transportResult.rows,
+            currentDate,
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).send(error.message);
+    }
+}
+
+export async function createAssignment(req, res) {
+    try {
+        const user_id = req.session.user.id;
+
+        const { transport_id, start_date, payment_type } = req.body;
+
+        const selectedDate = new Date(start_date);
+        const now = new Date();
+
+        if (selectedDate <= now) {
+            return res.status(400).send("Дата должна быть в будущем");
+        }
+
+        await pool.query(
+            `INSERT INTO assignments(
+                user_id,
+                transport_id,
+                start_date,
+                payment_type
+            )
+            VALUES ($1, $2, $3, $4)`,
+            [user_id, transport_id, start_date, payment_type]
+        );
+
+        res.send("Заявка успешно создана");
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).send(error.message);
+    }
+}
