@@ -1,5 +1,13 @@
 <h1>Оформление заявки на обучение</h1>
 
+{{#if error}}
+    <p>{{error}}</p>
+{{/if}}
+
+{{#if success}}
+    <p>{{success}}</p>
+{{/if}}
+
 <form action="/assignments" method="post">
     <div>
         <label>Транспорт:</label>
@@ -14,7 +22,12 @@
 
     <div>
         <label>Дата начала обучения:</label>
-        <input type="datetime-local" name="start_date" min="{{currentDate}}" required />
+        <input
+            type="datetime-local"
+            name="start_date"
+            min="{{currentDate}}"
+            required
+        />
     </div>
 
     <br />

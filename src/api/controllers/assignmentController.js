@@ -42,10 +42,18 @@ export async function renderHome(req, res) {
 
         const currentDate = now.toISOString().slice(0, 16);
 
+        const success = req.session.success;
+        const error = req.session.error;
+
+        req.session.success = null;
+        req.session.error = null;
+
         res.render("home", {
             userId: req.session.user.id,
             transports: transportResult.rows,
             currentDate,
+            success,
+            error,
         });
     } catch (error) {
         console.error(error);
@@ -78,10 +86,12 @@ export async function createAssignment(req, res) {
             [user_id, transport_id, start_date, payment_type]
         );
 
-        res.send("Заявка успешно создана");
+        req.session.success = "Заявка успешно создана";
+        res.redirect("/");
     } catch (error) {
         console.error(error);
 
-        res.status(500).send(error.message);
+        req.session.error = "Ошибка сервера";
+        res.redirect("/");
     }
 }

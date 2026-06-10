@@ -68,6 +68,17 @@ export async function register(req, res) {
             email,
         } = req.body;
 
+        const existingUser = await pool.query(
+            `SELECT * FROM credentials WHERE login = $1`,
+            [login]
+        );
+
+        if (existingUser.rows.length > 0) {
+            return res.render("register", {
+                error: "Логин уже занят",
+            });
+        }
+
         const credentialsResult = await pool.query(
             `INSERT INTO credentials(login, password)
             VALUES ($1, $2)
@@ -112,7 +123,9 @@ export async function register(req, res) {
     } catch (error) {
         console.error(error);
 
-        res.status(500).send(error.message);
+        res.status(500).render("register", {
+            error: error.message,
+        });
     }
 }
 
@@ -133,13 +146,17 @@ export async function login(req, res) {
         );
 
         if (result.rows.length === 0) {
-            return res.status(401).send("Пользователь не найден");
+            return res.status(401).render("login", {
+                error: "Пользователь не найден",
+            });
         }
 
         const user = result.rows[0];
 
         if (user.password !== password) {
-            return res.status(401).send("Неверный пароль");
+            return res.status(401).render("login", {
+                error: "Неверный пароль",
+            });
         }
 
         req.session.user = {
@@ -151,7 +168,9 @@ export async function login(req, res) {
     } catch (error) {
         console.error(error);
 
-        res.status(500).send(error.message);
+        res.status(500).redner("login", {
+            error: error.message,
+        });
     }
 }
 
