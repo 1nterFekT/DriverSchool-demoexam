@@ -1,12 +1,34 @@
-<h1>Панель администратора</h1>
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h1>Панель администратора</h1>
 
-{{#if error}}
-    <p>{{error}}</p>
-{{/if}}
+        {{#if error}}
+            <div class="error">
+                {{error}}
+            </div>
+        {{/if}}
 
-<form action="/admin" method="post">
-    <input name="login" placeholder="Логин" />
-    <input type="password" name="password" placeholder="Пароль" />
+        <form action="/admin" method="post">
+            <div class="form-group">
+                <input
+                    name="login"
+                    placeholder="Логин"
+                    required
+                />
+            </div>
 
-    <button type="submit">Войти</button>
-</form>
+            <div class="form-group">
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Пароль"
+                    required
+                />
+            </div>
+
+            <button class="btn" type="submit">
+                Войти
+            </button>
+        </form>
+    </div>
+</div>

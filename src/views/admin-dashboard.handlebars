@@ -1,32 +1,72 @@
-<h1>Панель администратора</h1>
-<a href="/logout">Выйти</a>
+<div class="container">
+    <div class="page-card">
+        <h1>Панель администратора</h1>
 
-<hr />
+        <a href="/logout" class="btn" style="display:block;text-align:center;margin-bottom:20px;">
+            Выйти
+        </a>
 
-{{#each assignments}}
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-        <p><b>Заявка #{{this.id}}</b></p>
-        <p>Пользователь: {{this.first_name}} {{this.last_name}}</p>
-        <p>Транспорт: {{this.transport_title}}</p>
-        <p>Дата начала обучения: {{formatDate this.start_date}}</p>
-        <p>Статус: <b>{{this.status}}</b></p>
-        <p>
-            Отзыв:
-            {{#if this.review}}
-                {{this.review}}
-            {{else}}
-                отзыв отсутствует
-            {{/if}}
-        </p>
+        {{#each assignments}}
+            <div class="assignment-card">
+                <p>
+                    <strong>
+                        Заявка #{{this.id}}
+                    </strong>
+                </p>
 
-        <form action="/admin/status" method="post">
-            <input type="hidden" name="assignment_id" value="{{this.id}}" />
-            <select name="status">
-                <option>Новая</option>
-                <option>Идет обучение</option>
-                <option>Обучение завершено</option>
-            </select>
-            <button type="submit">Обновить</button>
-        </form>
+                <p>
+                    Пользователь:
+                    {{this.first_name}}
+                    {{this.last_name}}
+                </p>
+
+                <p>
+                    Транспорт:
+                    {{this.transport_title}}
+                </p>
+
+                <p>
+                    Дата начала:
+                    {{formatDate this.start_date}}
+                </p>
+
+                <p>
+                    Статус:
+                    <span class="status">
+                        {{this.status}}
+                    </span>
+                </p>
+
+                <p>
+                    Отзыв:
+
+                    {{#if this.review}}
+                        {{this.review}}
+                    {{else}}
+                        отзыв отсутствует
+                    {{/if}}
+                </p>
+
+                <form action="/admin/status" method="post">
+                    <input
+                        type="hidden"
+                        name="assignment_id"
+                        value="{{this.id}}"
+                    />
+
+                    <div class="form-group">
+                        <select name="status">
+                            <option>Новая</option>
+                            <option>Идет обучение</option>
+                            <option>Обучение завершено</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" type="submit">
+                        Обновить статус
+                    </button>
+                </form>
+            </div>
+        {{/each}}
     </div>
-{{/each}}
+</div>

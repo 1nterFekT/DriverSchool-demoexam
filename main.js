@@ -21,18 +21,19 @@ app.engine(
                 const month = String(d.getMonth() + 1).padStart(2, "0");
                 const year = d.getFullYear();
                 const hours = String(d.getHours()).padStart(2, "0");
-                const minutes = String(d.getMinutes()).padStart(2, "0")
-                
-                return `${day}.${month}.${year} ${hours}:${minutes}`
-            }
-        }
-    })
+                const minutes = String(d.getMinutes()).padStart(2, "0");
+
+                return `${day}.${month}.${year} ${hours}:${minutes}`;
+            },
+        },
+    }),
 );
 app.set("view engine", "handlebars");
 app.set("views", "src/views");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 
 app.use(
     session({
@@ -42,7 +43,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 24,
         },
-    })
+    }),
 );
 
 app.use((req, res, next) => {

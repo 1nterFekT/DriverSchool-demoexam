@@ -1,15 +1,17 @@
-<nav>
-    <div>
-        <a href="/">
-            <h2>Автошкола</h2>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/" class="logo">
+            Автошкола
         </a>
-    </div>
 
-    <div>
-        {{#if user}}
-            <a href="/profile">Личный кабинет</a>
-            <span>{{user.login}}</span>
-            <a href="/logout">Выйти</a>
-        {{/if}}
+        <div class="nav-links">
+            {{#if user}}
+                <a href="/profile">Личный кабинет</a>
+                <span class="user-badge">
+                    {{user.login}}
+                </span>
+                <a href="/logout">Выйти</a>
+            {{/if}}
+        </div>
     </div>
 </nav>
