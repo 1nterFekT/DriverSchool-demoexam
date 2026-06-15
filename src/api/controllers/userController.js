@@ -129,6 +129,14 @@ export async function register(req, res) {
             });
         }
 
+        const phoneRegex = /^8\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}$/;
+
+        if (!phoneRegex.test(phone)) {
+            return res.render("register", {
+                error: "Телефон должен быть формата 8(XXX)XXX-XX-XX",
+            });
+        }
+
         const existingUser = await pool.query(
             `SELECT * FROM credentials WHERE login = $1`,
             [login]

@@ -27,7 +27,7 @@
                 <label>Дата начала обучения</label>
 
                 <input
-                    type="datetime-local"
+                    type="date"
                     name="start_date"
                     min="{{currentDate}}"
                     required
@@ -71,11 +71,15 @@
 
     form.addEventListener("submit", function (event) {
         const input = document.querySelector('[name="start_date"]');
-        const selected = new Date(input.value);
-        const now = new Date();
 
-        if (selected <= now) {
+        const selected = new Date(input.value);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selected <= today) {
             event.preventDefault();
+
             alert("Дата должна быть в будущем");
         }
     });

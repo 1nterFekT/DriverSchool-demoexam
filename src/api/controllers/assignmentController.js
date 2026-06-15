@@ -40,7 +40,7 @@ export async function renderHome(req, res) {
 
         const now = new Date();
 
-        const currentDate = now.toISOString().slice(0, 16);
+        const currentDate = now.toISOString().split("T")[0];
 
         const success = req.session.success;
         const error = req.session.error;
@@ -70,6 +70,7 @@ export async function createAssignment(req, res) {
 
         const selectedDate = new Date(start_date);
         const now = new Date();
+        now.setHours(0, 0, 0, 0);
 
         if (selectedDate <= now) {
             return res.status(400).send("Дата должна быть в будущем");
