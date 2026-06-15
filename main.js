@@ -20,16 +20,14 @@ app.engine(
                 const day = String(d.getDate()).padStart(2, "0");
                 const month = String(d.getMonth() + 1).padStart(2, "0");
                 const year = d.getFullYear();
-                const hours = String(d.getHours()).padStart(2, "0");
-                const minutes = String(d.getMinutes()).padStart(2, "0");
 
-                return `${day}.${month}.${year} ${hours}:${minutes}`;
+                return `${day}.${month}.${year}`;
             },
-            eq (a, b) {
+            eq(a, b) {
                 return a === b;
-            }
+            },
         },
-    }),
+    })
 );
 app.set("view engine", "handlebars");
 app.set("views", "src/views");
@@ -46,7 +44,7 @@ app.use(
         cookie: {
             maxAge: 1000 * 60 * 60 * 24,
         },
-    }),
+    })
 );
 
 app.use((req, res, next) => {
