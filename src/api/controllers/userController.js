@@ -37,7 +37,7 @@ export async function getAssignmentsByUserId(req, res) {
         const { id } = req.params;
         const { rows } = await pool.query(
             "SELECT * FROM assignments WHERE user_id = $1",
-            [id],
+            [id]
         );
 
         if (rows.length !== 0) {
@@ -71,7 +71,7 @@ export async function getProfile(req, res) {
             LEFT JOIN reviews r ON r.assignment_id = a.id
             WHERE a.user_id = $1
             ORDER BY a.id DESC`,
-            [user_id],
+            [user_id]
         );
 
         res.render("profile", {
@@ -131,7 +131,7 @@ export async function register(req, res) {
 
         const existingUser = await pool.query(
             `SELECT * FROM credentials WHERE login = $1`,
-            [login],
+            [login]
         );
 
         if (existingUser.rows.length > 0) {
@@ -144,7 +144,7 @@ export async function register(req, res) {
             `INSERT INTO credentials(login, password)
             VALUES ($1, $2)
             RETURNING id`,
-            [login, password],
+            [login, password]
         );
 
         const credentialsId = credentialsResult.rows[0].id;
@@ -170,7 +170,7 @@ export async function register(req, res) {
                 date_of_birth,
                 phone,
                 email,
-            ],
+            ]
         );
 
         const user = userResult.rows[0];
@@ -203,7 +203,7 @@ export async function login(req, res) {
             JOIN credentials
                 ON users.credentials_id = credentials.id
             WHERE credentials.login = $1`,
-            [login],
+            [login]
         );
 
         if (result.rows.length === 0) {
@@ -250,16 +250,24 @@ export async function createReview(req, res) {
 
         const check = await pool.query(
             `SELECT * FROM assignments WHERE id = $1 AND user_id = $2`,
-            [assignment_id, user_id],
+            [assignment_id, user_id]
         );
 
         if (check.rows.length === 0) {
             return res.status(403).send("Нет доступа");
         }
 
+        const assignment = check.rows[0];
+
+        if (assignment.status !== "Обучение завершено") {
+            return res
+                .status(400)
+                .send("Отзыв можно оставить только после завершения обучения");
+        }
+
         const existing = await pool.query(
             `SELECT * FROM reviews WHERE assignment_id = $1`,
-            [assignment_id],
+            [assignment_id]
         );
 
         if (existing.rows.length > 0) {
@@ -269,7 +277,7 @@ export async function createReview(req, res) {
         await pool.query(
             `INSERT INTO reviews(assignment_id, description)
             VALUES ($1, $2)`,
-            [assignment_id, description],
+            [assignment_id, description]
         );
 
         res.redirect("/profile");

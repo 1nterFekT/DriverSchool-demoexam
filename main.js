@@ -25,6 +25,9 @@ app.engine(
 
                 return `${day}.${month}.${year} ${hours}:${minutes}`;
             },
+            eq (a, b) {
+                return a === b;
+            }
         },
     }),
 );

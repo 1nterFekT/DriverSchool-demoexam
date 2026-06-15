@@ -46,26 +46,28 @@
                     {{/if}}
                 </p>
 
-                {{#unless this.review_description}}
-                    <form action="/reviews" method="post">
-                        <input
-                            type="hidden"
-                            name="assignment_id"
-                            value="{{this.assignment_id}}"
-                        />
+                {{#if (eq this.status "Обучение завершено")}}
+                    {{#unless this.review_description}}
+                        <form action="/reviews" method="post">
+                            <input
+                                type="hidden"
+                                name="assignment_id"
+                                value="{{this.assignment_id}}"
+                            />
 
-                        <div class="form-group">
-                            <textarea
-                                name="description"
-                                placeholder="Оставить отзыв"
-                            ></textarea>
-                        </div>
+                            <div class="form-group">
+                                <textarea
+                                    name="description"
+                                    placeholder="Оставить отзыв"
+                                ></textarea>
+                            </div>
 
-                        <button class="btn" type="submit">
-                            Отправить отзыв
-                        </button>
-                    </form>
-                {{/unless}}
+                            <button class="btn" type="submit">
+                                Отправить отзыв
+                            </button>
+                        </form>
+                    {{/unless}}
+                {{/if}}
             </div>
         {{/each}}
     </div>
